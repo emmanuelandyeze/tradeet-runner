@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.tradeet.student"
+      "package": "com.tradeet.runner",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -28,14 +29,24 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
-    ],
+			"expo-router",
+			[
+				"expo-notifications",
+				{
+					"sounds": ["./assets/sounds/notification.wav"],
+					"mode": "production"
+				}
+			]
+		],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "router": {
         "origin": false
+      },
+      "eas": {
+        "projectId": "dfd14ba6-ee3b-48aa-98ff-aba680cfbf3e"
       }
     }
   }

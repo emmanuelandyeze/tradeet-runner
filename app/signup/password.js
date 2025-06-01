@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
 	View,
 	TextInput,
 	Button,
 	Text,
 	TouchableOpacity,
+	ToastAndroid,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import {
+	useLocalSearchParams,
+	useRouter,
+} from 'expo-router';
+import { AuthContext } from '@/context/AuthContext';
 
 export default function NamePasswordScreen() {
 	const router = useRouter();
@@ -17,35 +22,70 @@ export default function NamePasswordScreen() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] =
 		useState(false);
+	const [nin, setNin] = useState('');
+	const { completeProfile } = useContext(AuthContext);
+	const { phoneNumber } = useLocalSearchParams();
+	const [loading, setLoading] = useState(false);
 
-	const handleNext = () => {
-		if (password === confirmPassword) {
-			// Navigate to the select campus screen
-			router.push('/signup/select-campus');
-		} else {
-			alert('Passwords do not match');
+	const handleNext = async () => {
+		if (password !== confirmPassword) {
+			ToastAndroid.show(
+				'Passwords do not match.',
+				ToastAndroid.SHORT,
+			);
+			return;
+		}
+
+		setLoading(true);
+
+		try {
+			const profile = {
+				phone: phoneNumber,
+				password: password,
+			};
+			console.log(profile);
+
+			const response = await completeProfile(profile);
+			console.log('Profile response:', response);
+			if (response.message === 'Profile setup completed') {
+				router.push({
+					pathname: '/signup/select-campus',
+					params: { phoneNumber },
+				});
+				ToastAndroid.show(
+					`Password successfully set!`,
+					ToastAndroid.LONG,
+				);
+				setLoading(false);
+			} else {
+				ToastAndroid.show(
+					response.message,
+					ToastAndroid.SHORT,
+				);
+				setLoading(false);
+			}
+		} catch (error) {
+			ToastAndroid.show(
+				'An error occurred. Please try again.',
+				ToastAndroid.SHORT,
+			);
+			console.error('Error completing profile:', error);
+			setLoading(false);
 		}
 	};
 
 	return (
 		<View className="flex-1 justify-center px-10">
 			<Text className="text-4xl mb-2 font-bold">
-				Just some more details
+				Let's secure your account
 			</Text>
 			{/* <Text className="text-4xl mb-2 font-bold">
 				Personal information
 			</Text> */}
 			<Text className="text-lg mb-5">
-				Help us secure your account
+				Enter your account password
 			</Text>
 			<View className="flex flex-col gap-5">
-				<TextInput
-					value={name}
-					onChangeText={setName}
-					className="border-b text-xl border-gray-300 mb-4"
-					placeholder="Name"
-				/>
-
 				{/* Password Input */}
 				<View className="flex-row items-center mb-4 border-b border-gray-300">
 					<TextInput
