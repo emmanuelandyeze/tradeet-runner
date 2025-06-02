@@ -28,7 +28,7 @@ const TabView = () => {
 		checkLoginStatus,
 		sendPushNotification,
 	} = useContext(AuthContext);
-	const [activeTab, setActiveTab] = useState('newRequests'); // Set the initial tab
+	const [activeTab, setActiveTab] = useState('activeOrders'); // Set the initial tab
 	const [activeOrdersCount, setActiveOrdersCount] =
 		useState(0); // State for active orders count
 	const [newRequestsCount, setNewRequestsCount] =
@@ -144,7 +144,7 @@ const TabView = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           } style={styles.container}>
 			<View style={styles.tabContainer}>
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					style={[
 						styles.tabButton,
 						activeTab === 'newRequests' && styles.activeTab,
@@ -154,7 +154,7 @@ const TabView = () => {
 					<Text style={styles.tabText}>
 						New Requests ({requests?.length})
 					</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 				<TouchableOpacity
 					style={[
 						styles.tabButton,
@@ -164,7 +164,7 @@ const TabView = () => {
 					onPress={() => setActiveTab('activeOrders')}
 				>
 					<Text style={styles.tabText}>
-						Active Orders ({orders?.length})
+						Delivery requests ({orders?.length})
 					</Text>
 				</TouchableOpacity>
 			</View>
