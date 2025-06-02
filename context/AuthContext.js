@@ -216,6 +216,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
+		// logout()
 		checkLoginStatus();
 	}, [expoPushToken]);
 
@@ -256,7 +257,7 @@ export const AuthProvider = ({ children }) => {
 				'/runner-auth/send-code',
 				{
 					phone,
-				},
+				}, 
 			);
 			console.log(response);
 			return response.data;

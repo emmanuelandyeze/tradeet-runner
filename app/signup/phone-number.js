@@ -30,7 +30,7 @@ export default function PhoneNumberScreen() {
 
 		try {
 			const response = await sendVerificationCode(
-				phoneNumber,
+				phoneNumber, 
 			);
 			console.log(response);
 
